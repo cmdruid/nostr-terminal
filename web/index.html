@@ -35,6 +35,23 @@
           <div id="terminal"></div>
           </div>
     </section>
+    <footer>
+      <section>
+        <p class="desc">This demo uses node-pty to access the terminal, xtermjs for </br>the console, and nostr emitter as the transport layer.</p>
+        <p>Please read the github readme on how to use the [ cmd ] and [ nav ] modes.</p>
+        <p>If something breaks, please submit an issue on the github page. :-)</p>
+      </section>
+      <section>
+        <div>
+          <p>
+            <a href="https://github.com/cmdruid/nostr-terminal">github-repo</a> | 
+            <a href="https://github.com/cmdruid/nostr-emitter">nostr-emitter</a> | 
+            <a href="https://github.com/microsoft/node-pty">node-pty</a> | 
+            <a href="https://github.com/xtermjs/xterm.js/">xterm.js</a>
+          </p>
+        </div>
+      </section>
+    </footer>
     <script type="module">
       /* Fetch our configured socket. */
       window.nostrTerm = { navmode: false, buffer: [] }

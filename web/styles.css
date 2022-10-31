@@ -1,8 +1,18 @@
 body {
   background-color: #21222b;
   color: whitesmoke;
+  font-size: large;
   font-family: monospace;
   min-width: 770px;
+  margin: 0;
+}
+
+h1 {
+  font-size: x-large;
+}
+
+p {
+  font-size: large;
 }
 
 h1, p {
@@ -21,7 +31,7 @@ input {
   border: none;
   background-color: transparent;
   color: transparent;
-  text-shadow: 0 0 0 whitesmoke;
+  text-shadow: 0 0 0 rgb(255, 255, 255, 0.5);
   font-weight: bold;
   font-family: monospace;
 }
@@ -35,7 +45,7 @@ header {
   margin: 0 auto;
   padding: 1em;
   margin-bottom:2em;
-  background-color: #282a35;
+  background-color: #2c4353;
 }
 
 section {
@@ -88,6 +98,7 @@ button:active {
 .connect-prompt input {
   font-size: smaller;
   font-weight: normal;
+  height: 1.5rem;
 }
 
 .title {
