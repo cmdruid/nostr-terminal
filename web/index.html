@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostr Terminal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="xterm.css"/>
+    <script src="https://unpkg.com/xterm"></script>
+    <script src='https://bundle.run/noble-secp256k1@1.2.14'></script>
+    <script src="https://unpkg.com/@cmdcode/nostr-emitter@1.1.11"></script>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Nostr Terminal</h1>
+        <p>Connect to your computer terminal remotely. Powered by Nostr.</p>
+      </div>
+    </header>
+    <main>
+      <section class="connect-window">
+        <pre>Paste the connection string from your node.</pre>
+        <div class="connect-prompt">
+          <input/>
+          <button class="connect-btn">connect</button>
+        </div>
+      </section>
+      <section class="main-window">
+        <div class="container view-frame">
+          <div class="title">
+            <span></span>
+            <p>Terminal</p>
+            <span><button id="mode">cmd mode</button></span>
+          </div>
+          <div id="terminal"></div>
+          </div>
+    </section>
+    <script type="module">
+      /* Fetch our configured socket. */
+      window.nostrTerm = { navmode: false, buffer: [] }
+
+      const connectInput  = document.querySelector('.connect-prompt input')
+      const connectButton = document.querySelector('.connect-btn')
+      const terminal      = document.querySelector('#terminal')
+      const modeButton    = document.querySelector('#mode')
+
+      const emitter = new NostrEmitter()
+      const { decodeShareLink } = NostrEmitter.utils
+
+      const xterm = new Terminal({
+        cursorBlink: true
+      })
+      xterm.resize(80, 30)
+
+      async function connect() {
+        const sharelink = connectInput.value
+        const [ secret, relayUrl ] = decodeShareLink(sharelink)
+        await emitter.connect(relayUrl, secret)
+        registerListeners()
+        emitter.emit('init')
+        localStorage.setItem('connectString', connectInput.value)
+        xterm.focus()
+      }
+
+      function registerListeners() {
+        emitter.on('data', data => {
+          // console.log('in:', data)
+          xterm.write(data)
+        })
+        xterm.onData(data => {
+          // console.log('out:', data)
+          let { navmode, buffer } = window.nostrTerm
+          if (!navmode) {
+            buffer.push(data)
+            xterm.write(data)
+            if (data === '\r') {
+              xterm.write('\n')
+              emitter.emit('cmd', buffer.join(''))
+              window.nostrTerm.buffer = []
+            }
+          } else {
+            emitter.emit('data', data)
+          }
+        })
+      }
+
+      function toggleMode() {
+        window.nostrTerm.navmode = !window.nostrTerm.navmode
+        modeButton.textContent = (window.nostrTerm.navmode)
+          ? 'nav mode'
+          : 'cmd mode'
+        xterm.focus()
+      }
+
+      connectInput.setAttribute('value', localStorage.getItem('connectString'))
+      connectButton.addEventListener('click', connect)
+      modeButton.addEventListener('click', toggleMode)
+
+      xterm.open(terminal)
+      xterm.focus()
+      xterm.write('waiting for connection ... ')
+    </script>
+  </body>
+</html>

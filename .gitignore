@@ -1,0 +1,4 @@
+certs
+.env*
+node_modules
+*.log
