@@ -19,7 +19,7 @@ The app will give you a base64 encoded connection string to copy/paste into the 
 On your browser:
 ```ini
 ## Navigate to the browser client (hosted on github):
-https://github.cmdruid.io/nostr-terminal/web
+https://cmdruid.github.io/nostr-terminal/web
 
 ## Or host / launch your own client! The files are here:
 nostr-terminal/web
