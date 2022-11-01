@@ -31,12 +31,12 @@ The browser will ask you for a connection string. Paste in the string and hit co
 
 The browser will give you a remote terminal under the same user account running the desktop app. Be careful running this app as a sudo or administartor user!
 
-There are two modes for the terminal: `cmd mode` or `nav mode`. You can toggle modes by clicking the `[ mode ]` button located near the top-right of the terminal window.
+There are two modes for the terminal: `buff mode` or `live mode`. You can toggle modes by clicking the `[ mode ]` button located near the top-right of the terminal window.
 
- **cmd mode**:
- All keyboard input is buffered locally, then sent to your machine when you press enter. This is the fastest mode, plus it prevents flooding the relay with every keystroke.
+ **buff mode**:
+ Most keyboard input is buffered locally, then sent to your machine when you press enter. This is the fastest mode, plus it prevents flooding the relay with every keystroke. Certain features do not work in this mode, such as Up/Down (for scrolling command history). I may implement them in the future!
 
- **nav mode**:
+ **live mode**:
  All keyboard input is streamed in real-time. This is nessecary when using a text editor (like vim or nano), but it will flood the relay with traffic. This app uses ephemeral events, so we are flooding in the most friendly way possible. However not all relays may handle this traffic properly, so please use this mode wisely and consider running your own relay if you plan to use it frequently.
 
 ## Disclaimer
@@ -45,7 +45,7 @@ This is a demo project that opens a remote terminal connection into your machine
 
 ## Known Issues
 
-If you open a text editor (or any TUI application) while using `cmd mode`, the screen may not draw properly. Switch to `nav mode` before hitting enter.
+If you open a text editor (or any TUI application) while using `buff mode`, the screen may not draw properly. Switch to `live mode` before opening the application.
 
 If you lose / close the connection while inside an editor (or any TUI application), the screen will not re-draw the application properly when you reconnect. I'm currently looking for elegant ways to fix this, and suggestions are welcome!
 
