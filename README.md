@@ -1,5 +1,5 @@
 # Nostr Terminal
-Connect to your computer terminal remotely from the browser. Powered by Nostr.
+Connect to any computer terminal remotely from the browser. NAT traversal powered by Nostr.
 
 ## How to Setup
 
@@ -17,7 +17,7 @@ yarn start || npm start
 ./nostrTerm.js <wss://relay.url.here> <optionalcustomsecret>
 
 ## If you want to specify your own defaults, 
-## create a .env file with the following:
+## create an .env file with the following:
 RELAY_URL=<wss://relay.url.here>
 SECRET_KEY=<optionalcustomsecret>
 ```
@@ -31,27 +31,25 @@ On your browser:
 ## Navigate to the browser client (hosted on github):
 https://cmdruid.github.io/nostr-terminal/web
 
-## Or host / launch your own client! The files are here:
+## Or host your own web client! The files are here:
 nostr-terminal/web
 ```
 
-The browser will ask for your connection string. Paste in the string and hit connect!
-
 ## How to Use
 
-The browser client connects you to the terminal server, using the same user account running the server. Be careful running this app as a sudo or administartor user!
+The browser client will connect to your terminal server, using the same user account running the server. Be careful running this app as a sudo or administartor user!
 
 There are two modes for the terminal: `buff mode` or `live mode`. You can toggle modes by clicking the `[ mode ]` button located near the top-right of the terminal window.
 
  **buff mode**:
- Most keyboard input is buffered locally, then sent to your machine when you press enter. This is the fastest mode, plus it prevents flooding the relay with every keystroke. Certain features do not work in this mode, such as Up/Down (for scrolling command history). I may implement them in the future!
+ Most keyboard input is buffered locally, then sent to your machine when you press enter. This is the fastest mode, plus it prevents flooding the relay with every keystroke. Certain features do not work in this mode, such as Up/Down (for scrolling command history). I'm looking to implement them in the future!
 
  **live mode**:
  All keyboard input is streamed in real-time. This is nessecary when using a text editor (like vim or nano), but it will flood the relay with traffic. This app uses ephemeral events, so we are flooding in the most friendly way possible. However not all relays may handle this traffic properly, so please use this mode wisely and consider running your own relay if you plan to use it frequently.
 
 ## Disclaimer
 
-This is a demo project that opens a remote terminal connection into your machine. The connection is end-to-end encrypted with a strong random secret, and uses a modern crypto library (webcrypto) with best-practices. That being said, please review the code and packages being used (NostrEmitter is only 500 lines), and take your own precautions.
+This is a demo project that opens a remote terminal connection into your machine. The connection is end-to-end encrypted with a secret, and uses a modern cryptography library (webcrypto) with best-practices. That being said, please review the code being used (NostrEmitter is just 500 lines), and take your own precautions!
 
 ## Known Issues
 
@@ -80,3 +78,9 @@ https://cs.smu.ca/~porter/csc/ref/ascii.html
 
 **ANSI Escape Sequences**  
 https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+
+**xtermjs**  
+https://github.com/xtermjs/xterm.js
+
+**node-pty**  
+https://github.com/microsoft/node-pty
