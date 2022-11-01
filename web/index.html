@@ -64,13 +64,9 @@
 
       const ec = new TextEncoder()
       const emitter = new NostrEmitter()
-      const { decodeShareLink, bytesToHex } = NostrEmitter.utils
-
-      const escape = '\x1B'
-
+      const { decodeShareLink } = NostrEmitter.utils
       const xterm = new Terminal({ cursorBlink: true })
 
-      const backspace = '\x08' //\x1B\x5B\x4B'
       xterm.resize(80, 30)
 
       async function connect() {
@@ -133,7 +129,6 @@
           case (keynum === 127 && curPos > 0):
             // Backspace
             const offset = buffer.length - curPos
-            console.log(offset)
             xterm.write(ANSI.mov.l(curPos))
             xterm.write(ANSI.erase.line)
             curPos -= 1
