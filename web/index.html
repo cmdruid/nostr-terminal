@@ -148,10 +148,10 @@
             window.nostrTerm.curPos += 1
             xterm.write(keys)
             break
-          case (keynum === 9):
-            // Tab
-            emitter.emit('buff', buffer.join('') + keys)
-            break
+          // case (keynum === 9):
+          //   // Tab
+          //   emitter.emit('buff', buffer.join('') + keys)
+          //   break
           case (keynum === 13):
             // Enter
             emitter.emit('buff', buffer.join('') + '\x0A')

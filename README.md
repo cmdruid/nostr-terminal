@@ -42,7 +42,7 @@ The browser client will connect to your terminal server, using the same user acc
 There are two modes for the terminal: `buff mode` or `live mode`. You can toggle modes by clicking the `[ mode ]` button located near the top-right of the terminal window.
 
  **buff mode**:
- Most keyboard input is buffered locally, then sent to your machine when you press enter. This is the fastest mode, plus it prevents flooding the relay with every keystroke. Certain features do not work in this mode, such as Up/Down (for scrolling command history). I'm looking to implement them in the future!
+ Most keyboard input is buffered locally, then sent to your machine when you press enter. This is the fastest mode, plus it prevents flooding the relay with every keystroke. Certain features do not work in this mode, such as Up/Down (for scrolling command history) and Tab (for auto-completion). I'm looking to implement them in the future!
 
  **live mode**:
  All keyboard input is streamed in real-time. This is nessecary when using a text editor (like vim or nano), but it will flood the relay with traffic. This app uses ephemeral events, so we are flooding in the most friendly way possible. However not all relays may handle this traffic properly, so please use this mode wisely and consider running your own relay if you plan to use it frequently.
@@ -63,6 +63,8 @@ This is a demo project that opens a remote terminal connection into your machine
 ## Known Issues
 
 If you open a text editor (or any TUI application) while using `buff mode`, the screen may not draw properly. Switch to `live mode` before opening the application.
+
+If you switch to `live mode` while you still have characters in the buffer, they will not be sent to the server properly.
 
 If you lose / close the connection while inside an editor (or any TUI application), the screen will not re-draw the application properly when you reconnect. I'm currently looking for elegant ways to fix this, and suggestions are welcome!
 
