@@ -10,11 +10,21 @@ On your computer:
 git clone <this repo>
 cd nostr-terminal
 
-## Start the nostr client.
-node app.js
+## Start the terminal server using a package manager.
+yarn start || npm start
+
+## You can also start the server directly, and provide arguments.
+./nostrTerm.js <wss://relay.url.here> <optionalcustomsecret>
+
+## If you want to specify your own defaults, 
+## create a .env file with the following:
+RELAY_URL=<wss://relay.url.here>
+SECRET_KEY=<optionalcustomsecret>
 ```
 
 The app will give you a base64 encoded connection string to copy/paste into the browser client. This string includes the relay url and connection secret, so keep it safe!
+
+If you do not provide a secret, the server will generate a random secret for you. This is the safest option!
 
 On your browser:
 ```ini
@@ -25,11 +35,11 @@ https://cmdruid.github.io/nostr-terminal/web
 nostr-terminal/web
 ```
 
-The browser will ask you for a connection string. Paste in the string and hit connect!
+The browser will ask for your connection string. Paste in the string and hit connect!
 
 ## How to Use
 
-The browser will give you a remote terminal under the same user account running the desktop app. Be careful running this app as a sudo or administartor user!
+The browser client connects you to the terminal server, using the same user account running the server. Be careful running this app as a sudo or administartor user!
 
 There are two modes for the terminal: `buff mode` or `live mode`. You can toggle modes by clicking the `[ mode ]` button located near the top-right of the terminal window.
 
@@ -56,3 +66,17 @@ Please feel free to post any bugs or questions on the issues page!
 ## Contributions
 
 Anyone may contribute! Please feel free to open a pull request.
+
+## Resources
+
+**ANSI escape code**  
+https://en.wikipedia.org/wiki/ANSI_escape_code
+
+**Console Codes — Linux manual page**  
+https://man7.org/linux/man-pages/man4/console_codes.4.html
+
+**The Standard ASCII Character Set and Codes**  
+https://cs.smu.ca/~porter/csc/ref/ascii.html
+
+**ANSI Escape Sequences**  
+https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797

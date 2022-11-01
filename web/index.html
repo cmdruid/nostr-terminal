@@ -84,7 +84,7 @@
       }
 
       function dataHandler(data) {
-        console.log('out:', data)
+        // console.log('out:', data)
         if (window.nostrTerm.buffmode) {
           keyBuffer(data)
         } else {
@@ -94,7 +94,7 @@
 
       function registerListeners() {
         emitter.on('data', data => {
-          console.log('in:', data, ec.encode(data))
+          // console.log('in:', data, ec.encode(data))
           xterm.write(data)
         })
         emitter.on('buff', data => data.split('').forEach(c => keyBuffer(c)))
@@ -116,8 +116,7 @@
 
         let { buffer, curPos } = window.nostrTerm
 
-        console.log(keys, keynum)
-        console.log('buffer:', buffer, curPos)
+        // console.log(keys, keynum)
 
         switch (true) {
           case (buffkey(keynum)):
@@ -174,7 +173,7 @@
             console.log('Invalid input:', keys, keynum)
             return
         }
-        console.log(window.nostrTerm.buffer, window.nostrTerm.curPos)
+        // console.log(window.nostrTerm.buffer, window.nostrTerm.curPos)
       }
 
       connectInput.setAttribute('value', localStorage.getItem('connectString'))

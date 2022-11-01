@@ -1,16 +1,16 @@
 {
   "name": "nostr-terminal",
-  "type": "module",
   "version": "1.0.0",
   "description": "Connect to your computer terminal remotely. Powered by Nostr.",
-  "main": "index.js",
+  "main": "nostrTerm.js",
   "author": "Christopher Scott",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node -r dotenv/config nostrTerm.js"
   },
   "dependencies": {
     "@cmdcode/nostr-emitter": "^1.1.11",
+    "dotenv": "^16.0.3",
     "node-pty": "^0.10.1",
     "ws": "^8.10.0"
   }
