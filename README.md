@@ -47,6 +47,15 @@ There are two modes for the terminal: `buff mode` or `live mode`. You can toggle
  **live mode**:
  All keyboard input is streamed in real-time. This is nessecary when using a text editor (like vim or nano), but it will flood the relay with traffic. This app uses ephemeral events, so we are flooding in the most friendly way possible. However not all relays may handle this traffic properly, so please use this mode wisely and consider running your own relay if you plan to use it frequently.
 
+## Tips on Usage
+
+```bash
+## Start the terminal server as a background process, 
+## and save the connection string to a local file.
+./nodeTerm.js > secrets.txt &
+cat secrets.txt
+```
+
 ## Disclaimer
 
 This is a demo project that opens a remote terminal connection into your machine. The connection is end-to-end encrypted with a secret, and uses a modern cryptography library (webcrypto) with best-practices. That being said, please review the code being used (NostrEmitter is just 500 lines), and take your own precautions!
