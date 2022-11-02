@@ -6,11 +6,23 @@ const os = require('os')
 const pty = require('node-pty')
 const NostrEmitter =require('@cmdcode/nostr-emitter')
 
-const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
-const emitter = new NostrEmitter()
-const utils = NostrEmitter.utils
+// Setup our utility libraries.
 const ec = new TextEncoder()
+const utils = NostrEmitter.utils
 
+// Initialize our arguments for connecting.
+const relayUrl = process.argv[2] || process.env.RELAY_URL || 'wss://nostr-relay.wlvs.space'
+const secret   = process.argv[3] || process.env.SECRET_KEY || utils.getRandomString()
+
+// If we are passing arguments from 
+// command line, enable silent start.
+const silent = Boolean(process.env.SILENT)
+
+// Initialize our emitter object.
+const emitter = new NostrEmitter({ silent })
+
+// Setup our shell process.
+const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
 const ptyProcess = pty.spawn(shell, [], {
   name: 'xterm-color',
   cols: 80,
@@ -19,6 +31,7 @@ const ptyProcess = pty.spawn(shell, [], {
   env: process.env
 })
 
+// Initialize our buffers.
 let hasBuffer  = false
 let sendBuffer = false
 
@@ -50,9 +63,7 @@ emitter.on('data', (data) => {
   ptyProcess.write(data)
 })
 
-const relayUrl = process.argv[2] || process.env.RELAY_URL || 'wss://nostr-relay.wlvs.space'
-const secret   = process.argv[3] || process.env.SECRET_KEY || utils.getRandomString()
-
+// Define our main connection function.
 async function main() {
   await emitter.connect(relayUrl, secret)
 
@@ -74,6 +85,11 @@ async function main() {
   })
 }
 
-console.log(`Paste this connection string into your web app:\n\n${utils.encodeShareLink(secret, relayUrl)}\n`)
+// Output our connection details.
+console.log(silent
+  ? utils.encodeShareLink(secret, relayUrl)
+  : `Paste this connection string into your web app:\n\n${utils.encodeShareLink(secret, relayUrl)}\n`
+)
 
+// Start main.
 main()
