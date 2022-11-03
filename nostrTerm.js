@@ -117,12 +117,9 @@ const sharelink = utils.encodeShareLink(secret, relayUrl)
 if (typeof opt.output === 'string') {
   const data = ec.encode(sharelink)
   writeFile(opt.output, data, { mode: 0644 })
+} else { 
+  console.log(sharelink)
 }
-
-console.log(opt.silent
-  ? sharelink
-  : `Connection string:\n\n${sharelink}\n`
-)
 
 // Start main.
 main()

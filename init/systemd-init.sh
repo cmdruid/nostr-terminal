@@ -19,6 +19,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+WorkingDirectory=$BIN_PATH
 ExecStart=$BIN_PATH/nostrTerm.js -o sharelink
 Type=simple
 Restart=on-failure
@@ -28,22 +29,10 @@ User=$USER_NAME
 WantedBy=multi-user.target
 "
 
-# Check if symlink to node exists.
-if ! [ -e "/usr/bin/node" ]; then
-  echo "Missing /usr/bin/node, adding symlink ..."
-  ln -s "$(which node)" /usr/bin/node
-fi
-
-# Check if symlink to npm exists.
-if ! [ -e "/usr/bin/npm" ]; then
-  echo "Missing /usr/bin/npm, adding symlink ..."
-  ln -s "$(which npm)" /usr/bin/npm
-fi
-
 # Check if user:group is setup.
-if ! id -u 'nostr-term' > /dev/null 2>&1; then
+if ! id -u "$USER_NAME" > /dev/null 2>&1; then
   echo "User does not exist! Adding $USER_NAME user ..."
-  useradd nostr-term
+  useradd $USER_NAME
 else
   echo "User $USER_NAME already exists."
 fi
@@ -75,7 +64,7 @@ fi
 # Install systemd service template
 if [ -z "$(systemctl list-unit-files | grep nostr-term)" ]; then
   echo "Service does not exist! Adding $SERV_NAME.service ..."
-  cp nostr-term.service /etc/systemd/system
+  printf "$SYSTEMD_CONFIG" > /etc/systemd/system/nostr-term.service
   systemctl daemon-reload
 else
   echo "Service $SERV_NAME already exists."
