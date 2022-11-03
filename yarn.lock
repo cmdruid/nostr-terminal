@@ -2,37 +2,46 @@
 # yarn lockfile v1
 
 
-"@cmdcode/nostr-emitter@^1.1.11":
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/@cmdcode/nostr-emitter/-/nostr-emitter-1.1.11.tgz#498a3b09213353d1e8c9c024e43e49aa945124c1"
-  integrity sha512-YydTftJ/Ws+GL6ZblN4N+ZOTolU6QKJ40M+M905ODkXK7JI0cd1fxwGTn0b33nTwX4kmus3sfI1jE0koueE4Sw==
+"@cmdcode/nostr-emitter@^1.1.12":
+  "integrity" "sha512-Cs+aJqR8SF34bQB3bb3520AOpueJWN9JwvA4KkgDB/35nJtRaD14zHehDSBJh55LWNQ++XWR/8rALRY7GYi99A=="
+  "resolved" "https://registry.npmjs.org/@cmdcode/nostr-emitter/-/nostr-emitter-1.1.12.tgz"
+  "version" "1.1.12"
   dependencies:
     "@noble/secp256k1" "^1.2.14"
-    ws "^8.9.0"
+    "ws" "^8.9.0"
 
 "@noble/secp256k1@^1.2.14":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@noble/secp256k1/-/secp256k1-1.7.0.tgz#d15357f7c227e751d90aa06b05a0e5cf993ba8c1"
-  integrity sha512-kbacwGSsH/CTout0ZnZWxnW1B+jH/7r/WAAKLBtrRJ/+CUH7lgmQzl3GTrQua3SGKWNSDsS6lmjnDpIJ5Dxyaw==
+  "integrity" "sha512-kbacwGSsH/CTout0ZnZWxnW1B+jH/7r/WAAKLBtrRJ/+CUH7lgmQzl3GTrQua3SGKWNSDsS6lmjnDpIJ5Dxyaw=="
+  "resolved" "https://registry.npmjs.org/@noble/secp256k1/-/secp256k1-1.7.0.tgz"
+  "version" "1.7.0"
 
-dotenv@^16.0.3:
-  version "16.0.3"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
-  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+"dotenv@^16.0.3":
+  "integrity" "sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ=="
+  "resolved" "https://registry.npmjs.org/dotenv/-/dotenv-16.0.3.tgz"
+  "version" "16.0.3"
 
-nan@^2.14.0:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.17.0.tgz#c0150a2368a182f033e9aa5195ec76ea41a199cb"
-  integrity sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==
+"nan@^2.14.0":
+  "integrity" "sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ=="
+  "resolved" "https://registry.npmjs.org/nan/-/nan-2.17.0.tgz"
+  "version" "2.17.0"
 
-node-pty@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/node-pty/-/node-pty-0.10.1.tgz#cd05d03a2710315ec40221232ec04186f6ac2c6d"
-  integrity sha512-JTdtUS0Im/yRsWJSx7yiW9rtpfmxqxolrtnyKwPLI+6XqTAPW/O2MjS8FYL4I5TsMbH2lVgDb2VMjp+9LoQGNg==
+"node-pty@^0.10.1":
+  "integrity" "sha512-JTdtUS0Im/yRsWJSx7yiW9rtpfmxqxolrtnyKwPLI+6XqTAPW/O2MjS8FYL4I5TsMbH2lVgDb2VMjp+9LoQGNg=="
+  "resolved" "https://registry.npmjs.org/node-pty/-/node-pty-0.10.1.tgz"
+  "version" "0.10.1"
   dependencies:
-    nan "^2.14.0"
+    "nan" "^2.14.0"
 
-ws@^8.10.0, ws@^8.9.0:
-  version "8.10.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.10.0.tgz#00a28c09dfb76eae4eb45c3b565f771d6951aa51"
-  integrity sha512-+s49uSmZpvtAsd2h37vIPy1RBusaLawVe8of+GyEPsaJTCMpj/2v8NpeK1SHXjBlQ95lQTmQofOJnFiLoaN3yw==
+"nostr-terminal@file:../../../../../usr/local/bin/nostr-term":
+  "resolved" "file:../../../../../usr/local/bin/nostr-term"
+  "version" "1.0.0"
+  dependencies:
+    "@cmdcode/nostr-emitter" "^1.1.12"
+    "dotenv" "^16.0.3"
+    "node-pty" "^0.10.1"
+    "ws" "^8.10.0"
+
+"ws@^8.10.0", "ws@^8.9.0":
+  "integrity" "sha512-+s49uSmZpvtAsd2h37vIPy1RBusaLawVe8of+GyEPsaJTCMpj/2v8NpeK1SHXjBlQ95lQTmQofOJnFiLoaN3yw=="
+  "resolved" "https://registry.npmjs.org/ws/-/ws-8.10.0.tgz"
+  "version" "8.10.0"
