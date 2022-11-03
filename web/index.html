@@ -72,7 +72,9 @@
 
       async function connect() {
         const sharelink = connectInput.value
-        const [ secret, relayUrl ] = decodeShareLink(sharelink)
+        const [ secret, relayUrl ] = (sharelink.includes('@'))
+          ? sharelink.split('@')
+          : decodeShareLink(sharelink)
         await emitter.connect(relayUrl, secret)
         registerListeners()
         emitter.emit('init')

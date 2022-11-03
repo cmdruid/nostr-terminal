@@ -37,6 +37,12 @@ else
   echo "User $USER_NAME already exists."
 fi
 
+# Check if /usr/bin/node exists.
+if ! [ -e "/usr/bin/env" ]; then
+  echo "Adding symlink for node ..."
+  ln -s "$(which node)" /usr/bin/node
+fi
+
 # Check if bin path exists.
 if ! [ -d "$BIN_PATH" ]; then
   echo "Path does not exist! Creating '$BIN_PATH' path ..."
