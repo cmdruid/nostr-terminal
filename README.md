@@ -10,6 +10,9 @@ On your computer:
 git clone <this repo>
 cd nostr-terminal
 
+## Install
+yarn install || npm install
+
 ## Start the terminal server using a package manager.
 yarn start || npm start
 
