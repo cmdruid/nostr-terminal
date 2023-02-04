@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/xterm@5.1.0/lib/xterm.js"></script>
     <script src="./ansi.js"></script>
     <script src='https://bundle.run/noble-secp256k1@1.2.14'></script>
-    <script src="https://unpkg.com/@cmdcode/nostr-emitter@2.0.7"></script>
+    <script src="https://unpkg.com/@cmdcode/nostr-emitter@2.0.8"></script>
   </head>
   <body>
     <header>
@@ -71,8 +71,8 @@
 
       async function connect() {
         const sharelink = connectInput.value
-        const [ secret, relayUrl ] = sharelink.split('@')
-        await emitter.connect(relayUrl, secret)
+        const [ secret, address ] = sharelink.split('@')
+        await emitter.connect(address, secret)
         registerListeners()
         emitter.publish('init')
         localStorage.setItem('connectString', connectInput.value)
