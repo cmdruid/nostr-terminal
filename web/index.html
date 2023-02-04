@@ -64,7 +64,7 @@
       const modeButton    = document.querySelector('#mode')
 
       const ec      = new TextEncoder()
-      const emitter = new NostrEmitter({ verbose: true })
+      const emitter = new NostrEmitter()
       const xterm   = new Terminal({ cursorBlink: true })
 
       xterm.resize(80, 30)
