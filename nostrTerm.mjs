@@ -102,9 +102,9 @@ async function main() {
       // Return chunk.
       if (sendBuffer) {
         sendBuffer = false
-        emitter.emit('buff', data)
+        emitter.publish('buff', data)
       } else {
-        emitter.emit('data', data)
+        emitter.publish('data', data)
       }
     }
     sendBuffer = false

@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/xterm@5.1.0/lib/xterm.js"></script>
     <script src="./ansi.js"></script>
     <script src='https://bundle.run/noble-secp256k1@1.2.14'></script>
-    <script src="https://unpkg.com/@cmdcode/nostr-emitter@2.0.6"></script>
+    <script src="https://unpkg.com/@cmdcode/nostr-emitter@2.0.7"></script>
   </head>
   <body>
     <header>
@@ -74,7 +74,7 @@
         const [ secret, relayUrl ] = sharelink.split('@')
         await emitter.connect(relayUrl, secret)
         registerListeners()
-        emitter.emit('init')
+        emitter.publish('init')
         localStorage.setItem('connectString', connectInput.value)
         xterm.focus()
       }
@@ -84,7 +84,7 @@
         if (window.nostrTerm.buffmode) {
           keyBuffer(data)
         } else {
-          emitter.emit('data', data)
+          emitter.publish('data', data)
         }
       }
 
@@ -154,7 +154,7 @@
           //   break
           case (keynum === 13):
             // Enter
-            emitter.emit('buff', buffer.join('') + '\x0A')
+            emitter.publish('buff', buffer.join('') + '\x0A')
             xterm.write(ANSI.mov.db(1))
             window.nostrTerm.buffer = []
             window.nostrTerm.curPos = 0
@@ -162,7 +162,7 @@
           case (bypass.includes(keynum)):
             window.nostrTerm.buffer = []
             window.nostrTerm.curPos = 0
-            emitter.emit('data', keys)
+            emitter.publish('data', keys)
             break
           default:
             console.log('Invalid input:', keys, keynum)
