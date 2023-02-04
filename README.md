@@ -10,6 +10,9 @@ On your computer:
 git clone <this repo>
 cd nostr-terminal
 
+## Install package dependencies.
+yarn install || npm install
+
 ## Start the terminal server using a package manager.
 yarn start || npm start
 
@@ -18,8 +21,8 @@ yarn start || npm start
 
 ## If you want to specify your own defaults, 
 ## create an .env file with the following:
-RELAY_URL=<wss://relay.url.here>
-SECRET_KEY=<optionalcustomsecret>
+ADDRESS=<wss://relay.url.here>
+SECRET=<optionalcustomsecret>
 ```
 
 The app will give you a base64 encoded connection string to copy/paste into the browser client. This string includes the relay url and connection secret, so keep it safe!
@@ -47,7 +50,7 @@ There are two modes for the terminal: `buff mode` or `live mode`. You can toggle
  **live mode**:
  All keyboard input is streamed in real-time. This is nessecary when using a text editor (like vim or nano), but it will flood the relay with traffic. This app uses ephemeral events, so we are flooding in the most friendly way possible. However not all relays may handle this traffic properly, so please use this mode wisely and consider running your own relay if you plan to use it frequently.
 
-## Tips on Usage
+## Tips on Usagefas
 
 ```bash
 ## Start the terminal server as a background process, 

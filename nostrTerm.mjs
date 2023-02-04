@@ -35,13 +35,13 @@ if (opt.config) {
 }
 
 // Apply the dotenv configuration.
-const config = dotenv.config(configSchema)
+const { parsed: config } = dotenv.config(configSchema)
 
 if (opt.verbose) console.log('Startup config:', opt ?? {}, arg, config)
 
 // Define our connection parameters.
-let relayUrl = arg[0] || config.RELAY_URL  || 'relay.nostrich.de',
-    secret   = arg[1] || config.SECRET_KEY || Buffer.from(crypto.getRandomValues(new Uint8Array(32))).toString('hex')
+let relayUrl = arg[0] || config.ADDRESS || 'relay.nostrich.de',
+    secret   = arg[1] || config.SECRET  || Buffer.from(crypto.getRandomValues(new Uint8Array(32))).toString('hex')
 
 // Initialize our emitter object.
 const emitter = new NostrEmitter({ silent: opt.silent, verbose: opt.verbose })
