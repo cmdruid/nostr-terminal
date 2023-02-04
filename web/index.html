@@ -6,10 +6,10 @@
     <title>Nostr Terminal</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="xterm.css"/>
-    <script src="https://unpkg.com/xterm"></script>
+    <script src="https://unpkg.com/xterm@5.1.0/lib/xterm.js"></script>
     <script src="./ansi.js"></script>
     <script src='https://bundle.run/noble-secp256k1@1.2.14'></script>
-    <script src="https://unpkg.com/@cmdcode/nostr-emitter@1.1.11"></script>
+    <script src="https://unpkg.com/@cmdcode/nostr-emitter@2.0.5"></script>
   </head>
   <body>
     <header>
@@ -22,7 +22,7 @@
       <section class="connect-window">
         <pre>Paste the connection string from your node.</pre>
         <div class="connect-prompt">
-          <input/>
+          <input placeholder="enter connection string ... (format is 'secret-phrase@relay.address')"/>
           <button class="connect-btn">connect</button>
         </div>
       </section>
@@ -63,18 +63,15 @@
       const terminal      = document.querySelector('#terminal')
       const modeButton    = document.querySelector('#mode')
 
-      const ec = new TextEncoder()
-      const emitter = new NostrEmitter()
-      const { decodeShareLink } = NostrEmitter.utils
-      const xterm = new Terminal({ cursorBlink: true })
+      const ec      = new TextEncoder()
+      const emitter = new NostrEmitter({ verbose: true })
+      const xterm   = new Terminal({ cursorBlink: true })
 
       xterm.resize(80, 30)
 
       async function connect() {
         const sharelink = connectInput.value
-        const [ secret, relayUrl ] = (sharelink.includes('@'))
-          ? sharelink.split('@')
-          : decodeShareLink(sharelink)
+        const [ secret, relayUrl ] = sharelink.split('@')
         await emitter.connect(relayUrl, secret)
         registerListeners()
         emitter.emit('init')
@@ -174,7 +171,7 @@
         // console.log(window.nostrTerm.buffer, window.nostrTerm.curPos)
       }
 
-      connectInput.setAttribute('value', localStorage.getItem('connectString'))
+      connectInput.setAttribute('value', localStorage.getItem('connectString') ?? '')
       connectButton.addEventListener('click', connect)
       modeButton.addEventListener('click', toggleMode)
 

@@ -2,16 +2,33 @@
   "name": "nostr-terminal",
   "version": "1.0.0",
   "description": "Connect to your computer terminal remotely. Powered by Nostr.",
-  "main": "nostrTerm.js",
   "author": "Christopher Scott",
   "license": "MIT",
-  "scripts": {
-    "start": "node nostrTerm.js"
+  "keywords": [
+    "nostr",
+    "remote",
+    "terminal",
+    "ssh"
+  ],
+  "main": "./nostrTerm.js",
+  "files": [
+    "README.md",
+    "LICENSE",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmdruid/nostr-terminal.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "dependencies": {
-    "@cmdcode/nostr-emitter": "^1.1.12",
+    "@cmdcode/nostr-emitter": "^2.0.6",
     "dotenv": "^16.0.3",
     "node-pty": "^0.10.1",
-    "ws": "^8.10.0"
+    "qrcode": "^1.5.1",
+    "ws": "^8.12.0"
   }
 }

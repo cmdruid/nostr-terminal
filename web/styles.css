@@ -99,6 +99,7 @@ button:active {
   font-size: smaller;
   font-weight: normal;
   height: 1.5rem;
+  color: white;
 }
 
 .title {

@@ -1,16 +1,15 @@
 #!/usr/bin/env node
-
-const os     = require('os')
-const pty    = require('node-pty')
-const path   = require('path')
-const dotenv = require('dotenv')
-const { writeFile } = require('node:fs/promises')
-const { parseArgs } = require('node:util')
-const NostrEmitter  = require('@cmdcode/nostr-emitter')
+import os            from 'os'
+import pty           from 'node-pty'
+import dotenv        from 'dotenv'
+import path          from 'path'
+import { writeFile } from 'fs'
+import { parseArgs } from 'util'
+import QREncoder     from 'qrcode'
+import NostrEmitter  from '@cmdcode/nostr-emitter'
 
 // Setup our utility libraries.
 const ec = new TextEncoder()
-const utils = NostrEmitter.utils
 
 // Define our dotenv config.
 const configSchema = { override: true }
@@ -38,17 +37,18 @@ if (opt.config) {
 // Apply the dotenv configuration.
 const config = dotenv.config(configSchema)
 
-if (opt.verbose) console.log('Startup config:', opt, arg, config)
+if (opt.verbose) console.log('Startup config:', opt ?? {}, arg, config)
 
 // Define our connection parameters.
-let relayUrl = arg[0] || config.RELAY_URL  || 'wss://nostr-relay.wlvs.space'
-    secret   = arg[1] || config.SECRET_KEY || utils.getRandomString()
+let relayUrl = arg[0] || config.RELAY_URL  || 'relay.nostrich.de',
+    secret   = arg[1] || config.SECRET_KEY || Buffer.from(crypto.getRandomValues(new Uint8Array(32))).toString('hex')
 
 // Initialize our emitter object.
-const emitter = new NostrEmitter({ silent: opt.silent })
+const emitter = new NostrEmitter({ silent: opt.silent, verbose: opt.verbose })
 
 // Setup our shell process.
 const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
+
 const ptyProcess = pty.spawn(shell, [], {
   name: 'xterm-color',
   cols: 80,
@@ -109,16 +109,19 @@ async function main() {
     }
     sendBuffer = false
   })
+
+  console.log('Listening for connections ...')
 }
 
 // Output our connection details.
-const sharelink = utils.encodeShareLink(secret, relayUrl)
+const sharelink = [ secret, relayUrl ].join('@')
+const qrcode    = await QREncoder.toString(sharelink, { type:'terminal', small: true })
 
 if (typeof opt.output === 'string') {
   const data = ec.encode(sharelink)
-  writeFile(opt.output, data, { mode: 0644 })
+  writeFile(opt.output, data, { mode: 0o644 })
 } else { 
-  console.log(sharelink)
+  console.log(qrcode, `\nShare Link: ${sharelink}`)
 }
 
 // Start main.

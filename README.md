@@ -52,7 +52,7 @@ There are two modes for the terminal: `buff mode` or `live mode`. You can toggle
 ```bash
 ## Start the terminal server as a background process, 
 ## and save the connection string to a local file.
-./nodeTerm.js > secrets.txt &
+./nodeTerm.mjs > secrets.txt &
 cat secrets.txt
 ```
 

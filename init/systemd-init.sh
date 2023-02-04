@@ -3,7 +3,6 @@
 
 SERV_NAME='nostr-term'
 BIN_PATH='/usr/local/bin/nostr-term'
-HOST_DEFAULT='wss://nostr-relay.wlvs.space'
 
 ## Define user account used for the service.
 [ -n "$1" ] && USER_NAME=$1 || USER_NAME="nostr-term"
@@ -57,9 +56,9 @@ if ! [ -e "$BIN_PATH/package.json" ]; then
   cp "../package.json" "$BIN_PATH/package.json"
 fi
 
-if ! [ -e "$BIN_PATH/nostrTerm.js" ]; then
-  echo "Copying over nostrTerm.js ..."
-  cp "../nostrTerm.js" "$BIN_PATH/nostrTerm.js"
+if ! [ -e "$BIN_PATH/nostrTerm.mjs" ]; then
+  echo "Copying over nostrTerm.mjs ..."
+  cp "../nostrTerm.mjs" "$BIN_PATH/nostrTerm.mjs"
 fi
 
 if ! [ -d "$BIN_PATH/node_modules" ]; then
@@ -79,4 +78,4 @@ fi
 # Enforce the correct permissions.
 chown -R $USER_NAME:$USER_NAME $BIN_PATH
 chmod -R 744 $BIN_PATH
-chmod a+x $BIN_PATH/nostrTerm.js
+chmod a+x $BIN_PATH/nostrTerm.mjs
