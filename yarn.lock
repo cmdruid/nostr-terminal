@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@cmdcode/nostr-emitter@^2.0.7":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@cmdcode/nostr-emitter/-/nostr-emitter-2.0.7.tgz#94a72ec12f479404e29f04a44ef237ebef395b6e"
-  integrity sha512-dsuPhHQd82JlD6cQNdJkSy6mDIVDOz63TPmbm3aL8wYUYLPP/+TfYEqkuKSsTws229hqQY9YsnmI71JqUX7W5w==
+"@cmdcode/nostr-emitter@^2.0.9":
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/@cmdcode/nostr-emitter/-/nostr-emitter-2.0.9.tgz#7b1a0eafdc3647efdb188022c9fa1cbe4f94b183"
+  integrity sha512-RP6BSi8iy8irrQt3pBTGN+4n2d8CmtT29P9f8R9sA7pnlal5460lQkd3y5EIpCjErBJmRM9P5/ITOyHKQJn82g==
   dependencies:
     "@noble/secp256k1" "^1.7.1"
     ws "^8.12.0"

@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/xterm@5.1.0/lib/xterm.js"></script>
     <script src="./ansi.js"></script>
     <script src='https://bundle.run/noble-secp256k1@1.2.14'></script>
-    <script src="https://unpkg.com/@cmdcode/nostr-emitter@2.0.8"></script>
+    <script src="https://unpkg.com/@cmdcode/nostr-emitter@2.0.9"></script>
   </head>
   <body>
     <header>
@@ -64,17 +64,22 @@
       const modeButton    = document.querySelector('#mode')
 
       const ec      = new TextEncoder()
-      const emitter = new NostrEmitter()
+      const dc      = new TextDecoder()
       const xterm   = new Terminal({ cursorBlink: true })
 
       xterm.resize(80, 30)
 
       async function connect() {
+        if (window.emitter === undefined) {
+          window.emitter = new NostrEmitter()
+          registerListeners()
+        }
         const sharelink = connectInput.value
         const [ secret, address ] = sharelink.split('@')
-        await emitter.connect(address, secret)
-        registerListeners()
-        emitter.publish('init')
+        await window.emitter.connect(address, secret)
+        window.nostrTerm.buffer = []
+        window.nostrTerm.curPos = 0
+        window.emitter.publish('init')
         localStorage.setItem('connectString', connectInput.value)
         xterm.focus()
       }
@@ -84,16 +89,16 @@
         if (window.nostrTerm.buffmode) {
           keyBuffer(data)
         } else {
-          emitter.publish('data', data)
+          window.emitter.publish('data', data)
         }
       }
 
       function registerListeners() {
-        emitter.on('data', data => {
+        window.emitter.on('data', data => {
           // console.log('in:', data, ec.encode(data))
           xterm.write(data)
         })
-        emitter.on('buff', data => data.split('').forEach(c => keyBuffer(c)))
+        window.emitter.on('buff', data => data.split('').forEach(c => keyBuffer(c)))
         xterm.onData(data => dataHandler(data))
       }
 
@@ -106,69 +111,85 @@
       }
 
       function keyBuffer(keys) {
-        const keynum  = ec.encode(keys).reduce((a, b) => a * b)
-        const buffkey = (keys) => (31 < keys && keys < 127)
-        const bypass  = [ 3, 27 ]
+        let keycodes = ec.encode(keys)
 
         let { buffer, curPos } = window.nostrTerm
-
-        // console.log(keys, keynum)
-
-        switch (true) {
-          case (buffkey(keynum)):
-            // Insert
-            buffer.splice(curPos, 0, keys)
-            if (curPos && curPos < buffer.length) {
-              xterm.write(ANSI.key.insert(curPos, buffer.join('')))
-            } else {
-              xterm.write(keys)
-            }
-            window.nostrTerm.curPos = curPos + 1
-            window.nostrTerm.buffer = buffer
-            break
-          case (keynum === 127 && curPos > 0):
-            // Backspace
-            const offset = buffer.length - curPos
-            xterm.write(ANSI.mov.l(curPos))
-            xterm.write(ANSI.erase.line)
-            curPos -= 1
-            buffer.splice(curPos, 1)
-            xterm.write(buffer.join(''))
-            if (offset) xterm.write(ANSI.mov.l(offset))
-            window.nostrTerm.curPos = curPos
-            window.nostrTerm.buffer = buffer
-            break
-          case (keynum === 167076 && curPos > 0):
-            // ArrowLeft
-            window.nostrTerm.curPos -= 1
-            xterm.write(keys)
-            break
-          case (keynum === 164619 && curPos < buffer.length):
-            // ArrowRight
-            window.nostrTerm.curPos += 1
-            xterm.write(keys)
-            break
-          // case (keynum === 9):
-          //   // Tab
-          //   emitter.emit('buff', buffer.join('') + keys)
-          //   break
-          case (keynum === 13):
-            // Enter
-            emitter.publish('buff', buffer.join('') + '\x0A')
-            xterm.write(ANSI.mov.db(1))
-            window.nostrTerm.buffer = []
-            window.nostrTerm.curPos = 0
-            break
-          case (bypass.includes(keynum)):
-            window.nostrTerm.buffer = []
-            window.nostrTerm.curPos = 0
-            emitter.publish('data', keys)
-            break
-          default:
-            console.log('Invalid input:', keys, keynum)
-            return
+        
+        if (keycodes[0] === 27 && keycodes[1] === 91) {
+          const code = keycodes[2]
+          const char = dc.decode(Uint8Array.of(code))
+          switch(true) {
+            case code === 50:
+              keycodes = keycodes.slice(6, -6)
+              window.emitter.publish('data', dc.decode(keycodes))
+              return
+            case (code === 65):
+              window.emitter.publish('data', keys)
+              return
+            case (code === 66):
+              window.emitter.publish('data', keys)
+              return
+            case (code === 67 && curPos < buffer.length):
+              window.nostrTerm.curPos += 1
+              xterm.write(keycodes)
+              break
+            case (code === 68 && curPos > 0):
+              window.nostrTerm.curPos -= 1
+              xterm.write(keycodes)
+              break
+            default:
+              return
+          }
+          return
         }
-        // console.log(window.nostrTerm.buffer, window.nostrTerm.curPos)
+
+        for (const code of keycodes) {
+          const keychar = dc.decode(Uint8Array.of(code))
+          const buffkey = (code) => (31 < code && code < 127)
+          const bypass  = [ 3, 27 ]
+
+          switch (true) {
+            case (buffkey(code) || code === 10):
+              // Insert
+              buffer.splice(curPos, 0, keychar)
+              if (curPos && curPos < buffer.length) {
+                xterm.write(ANSI.key.insert(curPos, buffer.join('')))
+              } else {
+                xterm.write(keychar)
+              }
+              window.nostrTerm.curPos = curPos + 1
+              window.nostrTerm.buffer = buffer
+              break
+            case (code === 127 && curPos > 0):
+              // Backspace
+              const offset = buffer.length - curPos
+              xterm.write(ANSI.mov.l(curPos))
+              xterm.write(ANSI.erase.line)
+              curPos -= 1
+              buffer.splice(curPos, 1)
+              xterm.write(buffer.join(''))
+              if (offset) xterm.write(ANSI.mov.l(offset))
+              window.nostrTerm.curPos = curPos
+              window.nostrTerm.buffer = buffer
+              break
+            case (code === 13):
+              // Enter
+              window.emitter.publish('buff', buffer.join('') + '\x0A')
+              xterm.write(ANSI.mov.db(1))
+              window.nostrTerm.buffer = []
+              window.nostrTerm.curPos = 0
+              break
+            case (bypass.includes(code)):
+              window.nostrTerm.buffer = []
+              window.nostrTerm.curPos = 0
+              window.emitter.publish('data', keys)
+              break
+            default:
+              console.log('Invalid input:', code, keychar)
+              return
+          }
+          // console.log(window.nostrTerm.buffer, window.nostrTerm.curPos)
+        }
       }
 
       connectInput.setAttribute('value', localStorage.getItem('connectString') ?? '')
